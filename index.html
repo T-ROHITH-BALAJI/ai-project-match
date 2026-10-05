@@ -15,6 +15,13 @@
       rel="stylesheet"
     />
     <title>NxtWave AI Builder</title>
+    <script>
+      try {
+        if (localStorage.getItem('nxtwave-theme') === 'dark') {
+          document.documentElement.classList.add('dark')
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

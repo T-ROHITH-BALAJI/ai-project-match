@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { isAdminAuthed, isAdminPath, signOutAdmin } from '../lib/adminAuth'
+import { ThemeToggle } from './ThemeToggle'
 
 const adminNav = [
   { to: '/admin', label: 'Workspace' },
@@ -29,7 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-dvh flex flex-col gradient-hero">
-      <header className="sticky top-0 z-50 border-b border-line/80 bg-card/85 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-line/80 bg-card/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 py-3">
           <Link to="/" className="flex items-center gap-2.5 group min-w-0">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand text-sm font-bold font-display text-white">
@@ -40,43 +41,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
 
-          {showAdminChrome ? (
-            <nav className="flex flex-wrap items-center justify-end gap-1.5">
-              {adminNav.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`text-xs font-medium px-2.5 py-1.5 rounded-full transition-colors ${
-                    pathname === link.to
-                      ? 'bg-brand text-white'
-                      : 'text-ink-soft hover:text-ink bg-paper'
-                  }`}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <ThemeToggle />
+            {showAdminChrome ? (
+              <nav className="flex flex-wrap items-center justify-end gap-1.5">
+                {adminNav.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
+                      pathname === link.to
+                        ? 'bg-brand text-white'
+                        : 'text-ink-soft hover:text-ink bg-paper'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-xs font-medium px-2.5 py-1.5 rounded-lg text-muted hover:text-ink"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <button
-                type="button"
-                onClick={logout}
-                className="text-xs font-medium px-2.5 py-1.5 rounded-full text-muted hover:text-ink"
+                  Sign out
+                </button>
+              </nav>
+            ) : (
+              <Link
+                to={authed ? '/admin' : '/admin/login'}
+                className="text-xs text-muted hover:text-ink-soft px-1 py-1"
               >
-                Sign out
-              </button>
-            </nav>
-          ) : (
-            <Link
-              to={authed ? '/admin' : '/admin/login'}
-              className="text-xs text-muted hover:text-ink-soft px-1 py-1"
-            >
-              Admin
-            </Link>
-          )}
+                Admin
+              </Link>
+            )}
+          </div>
         </div>
       </header>
-      <main className="flex-1 mx-auto w-full max-w-7xl min-w-0 px-4 sm:px-6 lg:px-8 pb-12 pt-6">
+      <main className="flex-1 mx-auto w-full max-w-7xl min-w-0 px-4 sm:px-6 lg:px-8 pb-12 pt-8">
         {children}
       </main>
-      <footer className="py-5 text-center text-xs text-muted">
+      <footer className="py-5 text-center text-xs text-muted border-t border-line/70">
         NxtWave AI Builder · Demo prototype
       </footer>
     </div>

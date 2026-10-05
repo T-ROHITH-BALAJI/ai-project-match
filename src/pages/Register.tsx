@@ -31,6 +31,25 @@ export function Register() {
   function onSubmit(e: FormEvent) {
     e.preventDefault()
     register(form)
+    void fetch('https://nxtwave-ai-builder.app.n8n.cloud/webhook/nxtwave-registration', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        project: session.project?.name ?? 'Your AI project',
+        workshop: WORKSHOP.title,
+        date: WORKSHOP.date,
+        time: `${WORKSHOP.time} ${WORKSHOP.timezone}`,
+        meetingId: WORKSHOP.meetingId,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) console.error('n8n registration webhook failed', res.status)
+      })
+      .catch((err) => {
+        console.error('n8n registration webhook failed', err)
+      })
     navigate(pathWithCampaign('/confirmation', attribution))
   }
 
@@ -81,7 +100,7 @@ export function Register() {
                   required={required}
                   value={form[key]}
                   onChange={(e) => update(key, e.target.value)}
-                  className="w-full rounded-xl bg-white border border-line px-4 py-3 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand/40"
+                  className="w-full rounded-xl bg-card border border-line px-4 py-3 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand/40"
                 />
               </label>
             ))}

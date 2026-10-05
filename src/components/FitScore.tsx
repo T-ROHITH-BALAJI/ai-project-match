@@ -7,13 +7,13 @@ export function FitScore({ score }: { score: number }) {
     <div className="flex flex-col items-center justify-center">
       <div className="relative h-[124px] w-[124px]">
         <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
-          <circle cx="60" cy="60" r={radius} fill="none" stroke="#e8e2d6" strokeWidth="9" />
+          <circle cx="60" cy="60" r={radius} fill="none" stroke="var(--color-line)" strokeWidth="9" />
           <circle
             cx="60"
             cy="60"
             r={radius}
             fill="none"
-            stroke="#164e63"
+            stroke="var(--color-brand)"
             strokeWidth="9"
             strokeLinecap="round"
             strokeDasharray={circ}

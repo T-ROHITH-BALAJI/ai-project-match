@@ -5,14 +5,14 @@
   --font-display: 'Outfit', system-ui, sans-serif;
   --color-ink: #12151c;
   --color-ink-soft: #3a4150;
-  --color-muted: #6b7280;
-  --color-paper: #f6f4ef;
-  --color-paper-deep: #ebe6dc;
+  --color-muted: #667085;
+  --color-paper: #f5f3ee;
+  --color-paper-deep: #eae6dc;
   --color-card: #ffffff;
-  --color-line: #e4dfd4;
+  --color-line: #e2ddd3;
   --color-brand: #164e63;
   --color-brand-dark: #0f3a4a;
-  --color-brand-soft: #e8f2f5;
+  --color-brand-soft: #e7f1f4;
   --color-warm: #b45309;
   --color-warm-soft: #fff7ed;
   --color-good: #047857;
@@ -22,26 +22,50 @@
 @layer base {
   html {
     @apply antialiased scroll-smooth;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+    --color-ink: #eceef2;
+    --color-ink-soft: #c5cad3;
+    --color-muted: #9aa3b2;
+    --color-paper: #1a1d23;
+    --color-paper-deep: #14171c;
+    --color-card: #23272f;
+    --color-line: #343a44;
+    --color-brand: #2f7f93;
+    --color-brand-dark: #246576;
+    --color-brand-soft: #1c323a;
+    --color-warm: #e0a06a;
+    --color-warm-soft: #3a2c1e;
+    --color-good: #4fba8a;
+    --color-good-soft: #1b3228;
   }
   body {
     @apply min-h-dvh bg-paper text-ink font-sans overflow-x-hidden break-words;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand/45 ring-offset-2 ring-offset-paper;
   }
 }
 
 @layer utilities {
   .card {
-    @apply bg-card rounded-2xl border border-line shadow-[0_1px_2px_rgba(20,24,31,0.04),0_10px_28px_rgba(20,24,31,0.05)];
+    @apply bg-card rounded-xl border border-line shadow-[0_1px_2px_rgba(18,21,28,0.04),0_8px_24px_rgba(18,21,28,0.05)];
+  }
+  html.dark .card {
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 28px rgba(0, 0, 0, 0.28);
   }
   .card-soft {
-    @apply bg-brand-soft/70 rounded-2xl border border-brand/10;
+    @apply bg-brand-soft/70 rounded-xl border border-brand/10;
   }
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.16em] text-brand;
   }
   .gradient-hero {
     background:
-      radial-gradient(ellipse 70% 45% at 8% -8%, rgb(22 78 99 / 0.1), transparent),
-      radial-gradient(ellipse 50% 40% at 100% 0%, rgb(180 83 9 / 0.06), transparent),
-      #f6f4ef;
+      radial-gradient(ellipse 70% 45% at 8% -8%, rgb(22 78 99 / 0.09), transparent),
+      radial-gradient(ellipse 50% 40% at 100% 0%, rgb(180 83 9 / 0.05), transparent),
+      var(--color-paper);
   }
 }

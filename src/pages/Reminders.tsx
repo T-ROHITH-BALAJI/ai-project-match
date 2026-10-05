@@ -96,7 +96,7 @@ export function Reminders() {
               <button
                 type="button"
                 onClick={() => copy(r.id)}
-                className="mt-3 rounded-lg border border-line bg-white px-3 py-2 text-xs font-semibold text-ink hover:bg-paper"
+                className="mt-3 rounded-lg border border-line bg-card px-3 py-2 text-xs font-semibold text-ink hover:bg-paper"
               >
                 {copiedId === r.id ? 'Copied ✓' : 'Copy Joining Details'}
               </button>

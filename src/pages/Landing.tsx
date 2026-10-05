@@ -33,7 +33,7 @@ export function Landing() {
           <span className="inline-block rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand border border-brand/15">
             {CAMPAIGN_GOAL.workshopTitle}
           </span>
-          <h1 className="mt-5 font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink text-balance">
+          <h1 className="mt-6 font-display text-4xl sm:text-5xl font-bold leading-[1.12] tracking-tight text-ink text-balance">
             {messaging.headline.split('YOU').map((part, i, parts) => (
               <span key={i}>
                 {part}
@@ -64,7 +64,8 @@ export function Landing() {
             )}
           </div>
 
-          <div className="card p-5 mt-8 max-w-xl">
+          <div className="card p-5 sm:p-6 mt-8 max-w-xl">
+            <p className="eyebrow mb-2">Workshop</p>
             <p className="text-sm text-ink-soft leading-relaxed">
               {isWorkshopFirst ? (
                 <>
@@ -125,7 +126,7 @@ export function Landing() {
         <SharePanel variant="workshop" title="Know another final-year engineering student?" />
       </div>
 
-      <section className="mt-10 pt-6 border-t border-line max-w-xl">
+      <section className="card p-5 sm:p-6 mt-10 max-w-xl">
         <h2 className="font-display text-base font-semibold text-ink">Questions or need help?</h2>
         <p className="text-sm text-ink-soft mt-2">Email: support@nxtwave.example</p>
         <p className="text-sm text-ink-soft">Phone: +91 XXXXX XXXXX</p>

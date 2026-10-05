@@ -59,7 +59,7 @@ export function JoiningDetails({
           href={WORKSHOP.joinUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-full rounded-xl px-4 py-3.5 text-sm font-semibold text-center border border-line bg-white hover:bg-paper text-ink"
+          className="block w-full rounded-xl px-4 py-3.5 text-sm font-semibold text-center border border-line bg-card hover:bg-paper text-ink"
         >
           Open join link
         </a>
@@ -73,14 +73,14 @@ export function JoiningDetails({
               href={buildGoogleCalendarUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 rounded-xl bg-white border border-line py-2.5 text-center text-xs font-semibold text-ink hover:bg-paper"
+              className="flex-1 rounded-xl bg-card border border-line py-2.5 text-center text-xs font-semibold text-ink hover:bg-paper"
             >
               Add to Google Calendar
             </a>
             <button
               type="button"
               onClick={() => downloadIcsFile(projectName)}
-              className="flex-1 rounded-xl bg-white border border-line py-2.5 text-xs font-semibold text-ink hover:bg-paper"
+              className="flex-1 rounded-xl bg-card border border-line py-2.5 text-xs font-semibold text-ink hover:bg-paper"
             >
               Download .ics
             </button>

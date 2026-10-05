@@ -68,7 +68,7 @@ export function SharePanel({ variant, projectName, title, compact }: SharePanelP
           <button
             type="button"
             onClick={handleCopy}
-            className="flex-1 rounded-lg bg-white border border-line py-2.5 text-xs font-medium text-ink-soft"
+            className="flex-1 rounded-lg bg-card border border-line py-2.5 text-xs font-medium text-ink-soft hover:bg-paper"
           >
             {copied ? 'Copied!' : 'Copy Referral Link'}
           </button>

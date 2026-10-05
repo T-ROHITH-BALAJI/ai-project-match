@@ -41,7 +41,7 @@ export function JourneyNav() {
                       ? 'bg-brand text-white'
                       : done
                         ? 'bg-brand-soft text-brand'
-                        : 'bg-white border border-line text-ink-soft'
+                        : 'bg-card border border-line text-ink-soft'
                   }`}
                 >
                   {step.label}

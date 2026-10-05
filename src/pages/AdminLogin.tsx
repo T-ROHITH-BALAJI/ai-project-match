@@ -47,7 +47,7 @@ export function AdminLogin() {
               setAdminId(e.target.value)
               setError('')
             }}
-            className="w-full rounded-xl bg-white border border-line px-4 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
+            className="w-full rounded-xl bg-card border border-line px-4 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
           />
         </label>
         <label className="block">
@@ -61,7 +61,7 @@ export function AdminLogin() {
               setPassword(e.target.value)
               setError('')
             }}
-            className="w-full rounded-xl bg-white border border-line px-4 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
+            className="w-full rounded-xl bg-card border border-line px-4 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
           />
         </label>
         {error && (
