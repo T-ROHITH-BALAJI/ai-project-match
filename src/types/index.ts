@@ -48,6 +48,7 @@ export interface ProjectMatch {
   futureUpgrades: string[]
   suggestedTools: string[]
   domain: BuildInterest
+  fitScore: number
 }
 
 export interface RegistrationData {
@@ -65,6 +66,8 @@ export interface UserSession {
   registration: RegistrationData | null
   registeredAt: string | null
   attended: boolean | null
+  workshopDay: boolean
+  workshopCompleted: boolean
   starterKitUnlocked: boolean
   kitDownloads: {
     ebook: boolean
@@ -82,6 +85,7 @@ export type AnalyticsEvent =
   | 'visitor'
   | 'diagnostic_start'
   | 'diagnostic_complete'
+  | 'project_recommendation'
   | 'registration_start'
   | 'registration'
   | 'share_click'
@@ -98,6 +102,7 @@ export interface AnalyticsState {
   visitors: number
   diagnosticStarts: number
   diagnosticCompletions: number
+  projectRecommendations: number
   registrationStarts: number
   registrations: number
   shareClicks: number

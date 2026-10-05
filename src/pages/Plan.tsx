@@ -22,87 +22,94 @@ export function Plan() {
 
   return (
     <div className="pb-6">
-      <p className="text-xs text-amber-400/90 font-medium uppercase tracking-wide mb-1">For your submission</p>
-      <h1 className="font-display text-2xl font-bold text-white mb-2">Campaign plan → product</h1>
-      <p className="text-sm text-slate-400 mb-6">
-        This page mirrors what you put in slides. The live site reads the same data for headlines, UTMs, and
-        dashboard targets—not a generic landing page built in isolation.
+      <p className="eyebrow mb-2">Internal Growth Operations · not in the student journey</p>
+      <h1 className="font-display text-3xl font-bold text-ink mb-2">Growth Plan</h1>
+      <p className="text-sm text-ink-soft mb-8 max-w-2xl">
+        This page mirrors the slide story. The live site reads the same data for headlines, UTMs, and
+        dashboard targets — not a generic landing page built in isolation.
       </p>
 
-      <section className="glass rounded-2xl p-4 mb-4">
-        <h2 className="text-sm font-semibold text-indigo-300 mb-2">1 · Understand the student</h2>
-        <dl className="space-y-2 text-sm text-slate-300">
-          <div>
-            <dt className="text-xs text-slate-500">Who</dt>
-            <dd>{STUDENT_INSIGHT.who}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-slate-500">Why they care</dt>
-            <dd>{STUDENT_INSIGHT.whyTheyCare}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-slate-500">What makes them register</dt>
-            <dd>{STUDENT_INSIGHT.whyRegister}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-slate-500">How the website reflects this</dt>
-            <dd className="text-cyan-200/90">{STUDENT_INSIGHT.productLink}</dd>
-          </div>
-        </dl>
-      </section>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+        <section className="card p-5">
+          <h2 className="text-sm font-semibold text-brand mb-3">1 · Understand the student</h2>
+          <dl className="space-y-3 text-sm text-ink-soft">
+            <div>
+              <dt className="text-xs text-muted">Who</dt>
+              <dd>{STUDENT_INSIGHT.who}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted">Why they care</dt>
+              <dd>{STUDENT_INSIGHT.whyTheyCare}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted">What makes them register</dt>
+              <dd>{STUDENT_INSIGHT.whyRegister}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted">How the website reflects this</dt>
+              <dd className="text-brand">{STUDENT_INSIGHT.productLink}</dd>
+            </div>
+          </dl>
+        </section>
 
-      <section className="glass rounded-2xl p-4 mb-4">
-        <h2 className="text-sm font-semibold text-indigo-300 mb-2">2 · Campaign (7 days · ₹{CAMPAIGN_GOAL.budgetInr})</h2>
-        <p className="text-xs text-slate-500 mb-3">Goal: {CAMPAIGN_GOAL.registrations} workshop registrations</p>
-        <ul className="space-y-3">
-          {CHANNELS.map((ch) => (
-            <li key={ch.id} className="text-sm border-b border-slate-800 pb-3 last:border-0 last:pb-0">
-              <div className="flex justify-between gap-2">
-                <span className="font-medium text-white">
-                  #{ch.priority} {ch.name}
-                </span>
-                <span className="text-xs text-slate-500 shrink-0">~{ch.expectedRegs} regs</span>
-              </div>
-              <p className="text-xs text-slate-500 mt-1">₹{ch.budgetInr} · {ch.tactic}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section className="card p-5">
+          <h2 className="text-sm font-semibold text-brand mb-2">
+            2 · Campaign (7 days · ₹{CAMPAIGN_GOAL.budgetInr})
+          </h2>
+          <p className="text-xs text-muted mb-3">Goal: {CAMPAIGN_GOAL.registrations} workshop registrations</p>
+          <ul className="space-y-3">
+            {CHANNELS.map((ch) => (
+              <li key={ch.id} className="text-sm border-b border-line pb-3 last:border-0 last:pb-0">
+                <div className="flex justify-between gap-2">
+                  <span className="font-medium text-ink">
+                    #{ch.priority} {ch.name}
+                  </span>
+                  <span className="text-xs text-muted shrink-0">~{ch.expectedRegs} regs</span>
+                </div>
+                <p className="text-xs text-muted mt-1">
+                  ₹{ch.budgetInr} · {ch.tactic}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
 
-      <section className="glass rounded-2xl p-4 mb-4">
-        <h2 className="text-sm font-semibold text-indigo-300 mb-2">Message tests (landing copy)</h2>
-        <ul className="space-y-2 text-xs">
-          {MESSAGE_VARIANTS.map((v) => (
-            <li key={v.id} className="rounded-lg bg-slate-900/80 p-3">
-              <span className="font-bold text-indigo-400">{v.id}</span> · {v.angle}
-              <p className="text-slate-300 mt-1">{v.headline}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+        <section className="card p-5">
+          <h2 className="text-sm font-semibold text-brand mb-3">Message tests (landing copy)</h2>
+          <ul className="space-y-2 text-sm">
+            {MESSAGE_VARIANTS.map((v) => (
+              <li key={v.id} className="rounded-lg bg-paper p-3">
+                <span className="font-bold text-brand">{v.id}</span> · {v.angle}
+                <p className="text-ink-soft mt-1">{v.headline}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <section className="glass rounded-2xl p-4 mb-4">
-        <h2 className="text-sm font-semibold text-indigo-300 mb-2">7-day rhythm</h2>
-        <ul className="space-y-2 text-xs text-slate-400">
-          {WEEK_PLAN.map((d) => (
-            <li key={d.day}>
-              <span className="text-slate-200 font-medium">Day {d.day}:</span> {d.focus}{' '}
-              <span className="text-slate-600">({d.kpi})</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section className="card p-5">
+          <h2 className="text-sm font-semibold text-brand mb-3">7-day rhythm</h2>
+          <ul className="space-y-2 text-sm text-ink-soft">
+            {WEEK_PLAN.map((d) => (
+              <li key={d.day}>
+                <span className="text-ink font-medium">Day {d.day}:</span> {d.focus}{' '}
+                <span className="text-muted">({d.kpi})</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
 
-      <section className="glass rounded-2xl p-4 mb-6">
-        <h2 className="text-sm font-semibold text-indigo-300 mb-2">Try campaign entry links</h2>
-        <p className="text-xs text-slate-500 mb-3">Opens home with different hero + channel banner (like real ads).</p>
-        <ul className="space-y-2">
+      <section className="card p-5 mb-6">
+        <h2 className="text-sm font-semibold text-brand mb-2">Try campaign entry links</h2>
+        <p className="text-xs text-muted mb-3">
+          Opens home with different hero + channel banner (like real ads).
+        </p>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {demoLinks.map((l) => (
             <li key={l.label}>
-              <Link
-                to={`/${l.qs}`}
-                className="block text-sm text-cyan-400 hover:text-cyan-300 py-1"
-              >
+              <Link to={`/${l.qs}`} className="block text-sm text-brand hover:underline py-1">
                 {l.label}
               </Link>
             </li>
@@ -110,9 +117,14 @@ export function Plan() {
         </ul>
       </section>
 
-      <Link to={pathWithCampaign('/', attribution)}>
-        <Button>Back to student experience</Button>
-      </Link>
+      <div className="flex flex-col sm:flex-row gap-2 max-w-xl">
+        <Link to="/admin" className="flex-1">
+          <Button variant="secondary">Admin Workspace</Button>
+        </Link>
+        <Link to={pathWithCampaign('/', attribution)} className="flex-1">
+          <Button>Back to student experience</Button>
+        </Link>
+      </div>
     </div>
   )
 }

@@ -5,6 +5,7 @@ const DEMO_SEED: Omit<AnalyticsState, 'demoMode'> = {
   visitors: 1847,
   diagnosticStarts: 1392,
   diagnosticCompletions: 1156,
+  projectRecommendations: 1156,
   registrationStarts: 620,
   registrations: 468,
   shareClicks: 214,
@@ -29,6 +30,7 @@ const eventField: Record<AnalyticsEvent, keyof Omit<AnalyticsState, 'demoMode'>>
   visitor: 'visitors',
   diagnostic_start: 'diagnosticStarts',
   diagnostic_complete: 'diagnosticCompletions',
+  project_recommendation: 'projectRecommendations',
   registration_start: 'registrationStarts',
   registration: 'registrations',
   share_click: 'shareClicks',
@@ -43,13 +45,18 @@ const eventField: Record<AnalyticsEvent, keyof Omit<AnalyticsState, 'demoMode'>>
 }
 
 export function loadAnalytics(): AnalyticsState {
-  return loadJson(ANALYTICS_KEY, LIVE_DEFAULT)
+  const raw = loadJson(ANALYTICS_KEY, LIVE_DEFAULT)
+  return {
+    ...LIVE_DEFAULT,
+    ...raw,
+    projectRecommendations: raw.projectRecommendations ?? raw.diagnosticCompletions ?? 0,
+  }
 }
 
 export function trackEvent(event: AnalyticsEvent, delta = 1): AnalyticsState {
   const state = loadAnalytics()
   const field = eventField[event]
-  const next = { ...state, [field]: state[field] + delta }
+  const next = { ...state, [field]: (state[field] ?? 0) + delta }
   saveJson(ANALYTICS_KEY, next)
   return next
 }
@@ -58,7 +65,7 @@ export function getDisplayAnalytics(state: AnalyticsState): AnalyticsState {
   if (!state.demoMode) return state
   const merged = { ...state, demoMode: true }
   for (const key of Object.keys(DEMO_SEED) as (keyof typeof DEMO_SEED)[]) {
-    merged[key] = DEMO_SEED[key] + state[key]
+    merged[key] = DEMO_SEED[key] + (state[key] ?? 0)
   }
   return merged
 }

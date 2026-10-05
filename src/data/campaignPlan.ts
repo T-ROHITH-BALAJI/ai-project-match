@@ -79,7 +79,7 @@ export const MESSAGE_VARIANTS = [
     headline: 'What AI Project Should YOU Build?',
     subheadline:
       'Answer 5 quick questions and get a personalized AI project idea based on your skills, interests and goals.',
-    cta: 'Find My AI Project',
+    cta: 'Find My Project → Build It in 60 Min',
     angle: 'Match-first (primary funnel)',
   },
   {

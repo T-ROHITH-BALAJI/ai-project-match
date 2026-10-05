@@ -1,6 +1,6 @@
 import type { BuildGoal, BuildInterest, DiagnosticAnswers, ProjectMatch, TechComfort } from '../types'
 
-const projects: Omit<ProjectMatch, 'whyMatch'>[] = [
+const projects: Omit<ProjectMatch, 'whyMatch' | 'fitScore'>[] = [
   {
     id: 'resume-analyzer',
     name: 'AI Resume Analyzer',
@@ -200,11 +200,21 @@ export function recommendProject(answers: DiagnosticAnswers): ProjectMatch {
   const project = projects.find((p) => p.id === bestId) ?? projects[0]
   return {
     ...project,
+    fitScore: toFitScore(bestScore),
     whyMatch: buildWhyMatch(answers, project),
   }
 }
 
-function buildWhyMatch(answers: DiagnosticAnswers, project: Omit<ProjectMatch, 'whyMatch'>): string {
+/** Map internal ranking (typical 1–9) onto a student-facing 72–97% fit. */
+function toFitScore(rawScore: number): number {
+  const clamped = Math.max(0, Math.min(9, rawScore))
+  return Math.round(72 + (clamped / 9) * 25)
+}
+
+function buildWhyMatch(
+  answers: DiagnosticAnswers,
+  project: Omit<ProjectMatch, 'whyMatch' | 'fitScore'>
+): string {
   const parts = [
     `${project.name} fits your interest in ${answers.interest.toLowerCase()} and your ${answers.branch} background.`,
     answers.goal === 'Placement preparation' || answers.goal === 'Resume'
@@ -229,7 +239,7 @@ function buildWhyMatch(answers: DiagnosticAnswers, project: Omit<ProjectMatch, '
 export function getProjectById(id: string): ProjectMatch | undefined {
   const base = projects.find((p) => p.id === id)
   if (!base) return undefined
-  return { ...base, whyMatch: '' }
+  return { ...base, whyMatch: '', fitScore: 80 }
 }
 
 export { projects }

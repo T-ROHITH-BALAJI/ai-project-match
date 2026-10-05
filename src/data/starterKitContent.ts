@@ -35,44 +35,79 @@ export const starterKit = {
         resume: 'Manufacturing / IoT talking point',
         extensions: 'Edge deploy on Pi',
       },
+      {
+        project: 'AI-Powered Portfolio Site',
+        problem: 'Static portfolios do not answer recruiter questions.',
+        difficulty: 'Beginner',
+        stack: 'React + Tailwind + OpenAI',
+        dataset: 'Your own project blurbs',
+        ai: 'Constrained Q&A over your work',
+        start: 'Chat widget on a one-page site',
+        resume: 'Live link on the resume header',
+        extensions: 'Analytics, custom domain',
+      },
     ],
   },
   toolsGuide: {
-    title: 'AI Tools Every Engineering Student Should Know',
+    title: 'AI Tools Worth Knowing Right Now',
+    intro:
+      'Each group is organized by the job it does — not a dump of logos. Pick one tool per job for your project week.',
     categories: [
       {
         useCase: 'Coding',
+        solves: 'Write, navigate, and repair code faster without skipping the learning.',
         tools: [
-          { name: 'GitHub Copilot', problem: 'Speed up boilerplate and tests while you learn patterns.' },
-          { name: 'Cursor', problem: 'Navigate unfamiliar codebases and refactor safely.' },
+          { name: 'GitHub Copilot', problem: 'Speeds up boilerplate and tests while you still read the diff.' },
+          { name: 'Cursor', problem: 'Helps you move through an unfamiliar repo and refactor with context.' },
         ],
       },
       {
         useCase: 'Research',
+        solves: 'Find papers, docs, and prior art without a 40-tab rabbit hole.',
         tools: [
-          { name: 'Semantic Scholar', problem: 'Find papers without drowning in irrelevant hits.' },
-          { name: 'Elicit', problem: 'Summarize literature for lit-review sections.' },
+          { name: 'Semantic Scholar', problem: 'Surfaces relevant papers instead of generic web results.' },
+          { name: 'Elicit', problem: 'Drafts literature notes you can verify against the source PDF.' },
         ],
       },
       {
-        useCase: 'Learning',
+        useCase: 'Development',
+        solves: 'Host, ship, and iterate on a demo that someone else can click.',
         tools: [
-          { name: 'Kaggle Learn', problem: 'Structured micro-courses with notebooks.' },
-          { name: 'DeepLearning.AI', problem: 'Short courses aligned to industry stacks.' },
+          { name: 'Vercel / Netlify', problem: 'Gets a frontend URL in minutes for resume and WhatsApp shares.' },
+          { name: 'Render / Railway', problem: 'Hosts a small API with env secrets when Streamlit is not enough.' },
         ],
       },
       {
-        useCase: 'AI development',
+        useCase: 'Design',
+        solves: 'Make the first version look intentional so the AI work is not hidden by a rough UI.',
         tools: [
-          { name: 'Hugging Face', problem: 'Access models and datasets without training from scratch.' },
-          { name: 'LangChain', problem: 'Compose LLM apps with memory, tools, and retrieval.' },
+          { name: 'Figma', problem: 'Sketch a one-screen flow before you fight CSS.' },
+          { name: 'v0 / Midjourney (sparingly)', problem: 'Explore layout or hero direction — then rebuild in your stack.' },
         ],
       },
       {
         useCase: 'Automation',
+        solves: 'Connect tools so reminders, sheets, and follow-ups do not depend on you remembering.',
         tools: [
-          { name: 'n8n', problem: 'Connect APIs when you outgrow one-off scripts.' },
-          { name: 'Make', problem: 'Visual workflows for non-engineer teammates.' },
+          { name: 'n8n', problem: 'Self-hostable workflows when you outgrow one-off scripts.' },
+          { name: 'Make', problem: 'Visual flows teammates can read without opening your Python file.' },
+        ],
+      },
+      {
+        useCase: 'Productivity',
+        solves: 'Keep the project moving in short, honest time boxes.',
+        tools: [
+          { name: 'Notion / Obsidian', problem: 'One place for decisions, prompts, and interview talking points.' },
+          { name: 'Google Calendar', problem: 'Protects the 60-minute workshop and the five follow-up days.' },
+        ],
+      },
+      {
+        useCase: 'AI / LLM development',
+        solves: 'Call models, retrieve context, and evaluate answers without training from scratch.',
+        tools: [
+          { name: 'OpenAI / Gemini APIs', problem: 'A first working completion or chat in the workshop hour.' },
+          { name: 'Hugging Face', problem: 'Models and datasets when you need something more specific than a chat API.' },
+          { name: 'LangChain / Vercel AI SDK', problem: 'Compose memory, tools, and streaming without a custom framework.' },
         ],
       },
     ],

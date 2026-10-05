@@ -1,43 +1,46 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../components/Button'
+import { JourneyNav } from '../components/JourneyNav'
 import { useApp } from '../context/AppContext'
 import { WORKSHOP } from '../data/workshop'
+import { copyJoiningDetails } from '../lib/joining'
 
 const reminders = [
   {
     id: 't0',
-    timing: 'T+0 · Right now',
-    channel: 'Email + WhatsApp',
-    body: (project: string) =>
-      `You're registered for "${WORKSHOP.title}" on ${WORKSHOP.date} at ${WORKSHOP.time} ${WORKSHOP.timezone}.\n\nJoin: ${WORKSHOP.joinUrl}\n\nYour project match: ${project}`,
+    timing: 'T+0',
+    when: 'Right now — registration confirmation',
+    headline: 'You’re registered.',
+    action: 'Save joining details and add the workshop to your calendar.',
   },
   {
     id: '24h',
     timing: '24 hours before',
-    channel: 'WhatsApp',
-    body: (project: string) =>
-      `Reminder: Your AI workshop is tomorrow 🚀\n\n${WORKSHOP.title}\n${WORKSHOP.date} · ${WORKSHOP.time} IST\n\nJoin: ${WORKSHOP.joinUrl}\n\nProject: ${project}`,
+    when: 'Workshop reminder',
+    headline: 'Your AI workshop is tomorrow.',
+    action: 'Block 60 minutes and confirm your laptop is ready.',
   },
   {
     id: '1h',
     timing: '1 hour before',
-    channel: 'WhatsApp + Push',
-    body: (project: string) =>
-      `Your AI workshop starts in 1 hour 🚀\n\n${WORKSHOP.title}\n\nJoin here:\n${WORKSHOP.joinUrl}\n\nYour project match:\n${project}`,
+    when: 'Workshop reminder',
+    headline: 'Your AI workshop starts in 1 hour.',
+    action: 'Open the join link and keep Meeting ID + passcode handy.',
   },
   {
     id: '10m',
     timing: '10 minutes before',
-    channel: 'WhatsApp',
-    body: () =>
-      `Starting soon! Grab water & open your laptop.\n\nJoin now: ${WORKSHOP.joinUrl}`,
+    when: 'Final reminder',
+    headline: 'Starting soon — grab water and open your laptop.',
+    action: 'Join now with the details below.',
   },
 ]
 
 export function Reminders() {
   const navigate = useNavigate()
   const { session } = useApp()
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!session.registration) navigate('/register', { replace: true })
@@ -47,45 +50,69 @@ export function Reminders() {
 
   const project = session.project?.name ?? 'Your AI project'
 
+  async function copy(id: string) {
+    const ok = await copyJoiningDetails()
+    if (ok) {
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 2000)
+    }
+  }
+
   return (
     <div>
-      <h1 className="font-display text-xl font-bold text-white mb-1">Automated reminders</h1>
-      <p className="text-sm text-slate-400 mb-6">
-        Simulated notification flow — in production these connect to email/WhatsApp APIs.
+      <JourneyNav />
+      <h1 className="font-display text-3xl font-bold text-ink mb-1">Automated reminders</h1>
+      <p className="text-sm text-ink-soft mb-2 max-w-2xl">
+        Simulated notification flow — in production these connect to email/WhatsApp APIs. Each message
+        includes workshop name, time, joining details, and a clear action.
       </p>
+      <p className="text-xs text-muted mb-6">Prototype simulation · No real messages are sent</p>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {reminders.map((r, i) => (
-          <div key={r.id} className="glass rounded-2xl p-4 relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-cyan-400" />
+          <article key={r.id} className="card p-5 relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand" />
             <div className="pl-2">
               <div className="flex justify-between items-start gap-2 mb-2">
-                <span className="text-xs font-semibold text-indigo-300">{r.timing}</span>
-                <span className="text-[10px] text-slate-500">{r.channel}</span>
+                <span className="text-xs font-semibold text-brand">
+                  {r.timing} · {r.when}
+                </span>
+                {i === 0 && (
+                  <span className="text-[10px] uppercase tracking-wide text-good">Sent ✓</span>
+                )}
               </div>
-              <pre className="text-xs text-slate-400 whitespace-pre-wrap font-sans leading-relaxed">
-                {r.body(project)}
-              </pre>
+              <p className="font-display font-semibold text-ink">{r.headline}</p>
+              <p className="text-sm text-ink-soft mt-1">{WORKSHOP.title}</p>
+              <p className="text-xs text-muted mt-2">
+                {WORKSHOP.date} · {WORKSHOP.time} {WORKSHOP.timezone}
+              </p>
+              <p className="text-xs text-ink-soft mt-2">
+                Meeting ID: {WORKSHOP.meetingId}
+                <br />
+                Passcode: {WORKSHOP.passcode}
+              </p>
+              <p className="text-xs text-muted mt-2">Project: {project}</p>
+              <p className="text-xs text-ink mt-3 font-medium">{r.action}</p>
+              <button
+                type="button"
+                onClick={() => copy(r.id)}
+                className="mt-3 rounded-lg border border-line bg-white px-3 py-2 text-xs font-semibold text-ink hover:bg-paper"
+              >
+                {copiedId === r.id ? 'Copied ✓' : 'Copy Joining Details'}
+              </button>
             </div>
-            {i === 0 && (
-              <span className="mt-2 inline-block text-[10px] uppercase tracking-wide text-emerald-400">
-                Sent ✓
-              </span>
-            )}
-          </div>
+          </article>
         ))}
       </div>
 
-      <p className="text-xs text-slate-500 mt-4 text-center">
-        To: {session.registration.email} · {session.registration.phone}
-      </p>
-
-      <Link to="/attendance" className="block mt-6">
-        <Button>Continue to workshop day</Button>
-      </Link>
-      <Link to="/confirmation" className="block mt-2">
-        <Button variant="ghost">Back to confirmation</Button>
-      </Link>
+      <div className="flex flex-col sm:flex-row gap-2 max-w-xl mt-8">
+        <Link to="/attendance" className="flex-1">
+          <Button>Continue to workshop day</Button>
+        </Link>
+        <Link to="/roadmap" className="flex-1">
+          <Button variant="ghost">Back to roadmap</Button>
+        </Link>
+      </div>
     </div>
   )
 }

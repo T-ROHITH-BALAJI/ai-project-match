@@ -12,7 +12,7 @@ export function buildGoogleCalendarUrl(): string {
     action: 'TEMPLATE',
     text: WORKSHOP.calendarTitle,
     dates: `${start}/${end}`,
-    details: `${WORKSHOP.calendarDescription}\n\nJoin: ${WORKSHOP.joinUrl}`,
+    details: `${WORKSHOP.calendarDescription}\n\nMeeting ID: ${WORKSHOP.meetingId}\nPasscode: ${WORKSHOP.passcode}\nJoin: ${WORKSHOP.joinUrl}`,
     location: WORKSHOP.joinUrl,
     ctz: 'Asia/Kolkata',
   })
@@ -24,13 +24,13 @@ export function downloadIcsFile(projectName?: string): void {
   const endHour = parseInt(WORKSHOP.time24.split(':')[0]!, 10) + 1
   const end = `${WORKSHOP.dateIso.replace(/-/g, '')}T${pad(endHour)}0000`
   const desc = projectName
-    ? `${WORKSHOP.calendarDescription}\\nYour project match: ${projectName}\\nJoin: ${WORKSHOP.joinUrl}`
-    : `${WORKSHOP.calendarDescription}\\nJoin: ${WORKSHOP.joinUrl}`
+    ? `${WORKSHOP.calendarDescription}\\nYour project match: ${projectName}\\nMeeting ID: ${WORKSHOP.meetingId}\\nPasscode: ${WORKSHOP.passcode}\\nJoin: ${WORKSHOP.joinUrl}`
+    : `${WORKSHOP.calendarDescription}\\nMeeting ID: ${WORKSHOP.meetingId}\\nPasscode: ${WORKSHOP.passcode}\\nJoin: ${WORKSHOP.joinUrl}`
 
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//NxtWave//AI Project Match//EN',
+    'PRODID:-//NxtWave//AI Builder//EN',
     'BEGIN:VEVENT',
     `DTSTART;TZID=Asia/Kolkata:${start}`,
     `DTEND;TZID=Asia/Kolkata:${end}`,

@@ -29,6 +29,8 @@ const defaultSession: UserSession = {
   registration: null,
   registeredAt: null,
   attended: null,
+  workshopDay: false,
+  workshopCompleted: false,
   starterKitUnlocked: false,
   kitDownloads: {
     ebook: false,
@@ -62,6 +64,8 @@ interface AppContextValue {
   setAnswers: (answers: DiagnosticAnswers) => void
   register: (data: RegistrationData) => void
   setAttended: (attended: boolean) => void
+  startWorkshopDay: () => void
+  completeWorkshop: () => void
   markKitDownload: (key: keyof UserSession['kitDownloads']) => void
   refreshAnalytics: () => void
   resetDemo: () => void
@@ -75,8 +79,17 @@ function persistSession(session: UserSession): void {
 
 /** Every visitor gets a stable ref code for sharing (upgraded to name-based after register). */
 function hydrateSession(raw: UserSession): UserSession {
-  if (raw.myReferralCode) return raw
-  const next = { ...raw, myReferralCode: createGuestReferralCode() }
+  const next: UserSession = {
+    ...defaultSession,
+    ...raw,
+    kitDownloads: { ...defaultSession.kitDownloads, ...raw.kitDownloads },
+    workshopDay: raw.workshopDay ?? raw.attended === true,
+    workshopCompleted: raw.workshopCompleted ?? raw.starterKitUnlocked ?? false,
+    project: raw.project
+      ? { ...raw.project, fitScore: raw.project.fitScore ?? 86 }
+      : null,
+    myReferralCode: raw.myReferralCode ?? createGuestReferralCode(),
+  }
   persistSession(next)
   return next
 }
@@ -128,6 +141,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return next
       })
       trackEvent('diagnostic_complete')
+      trackEvent('project_recommendation')
       refreshAnalytics()
     },
     [refreshAnalytics]
@@ -162,19 +176,53 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const next: UserSession = {
           ...s,
           attended,
-          starterKitUnlocked: attended,
+          workshopCompleted: attended ? s.workshopCompleted : false,
+          starterKitUnlocked: attended ? s.starterKitUnlocked : false,
         }
         persistSession(next)
         return next
       })
       if (attended) {
         trackEvent('attendance_confirmed')
-        trackEvent('starter_kit_view')
       }
       refreshAnalytics()
     },
     [refreshAnalytics]
   )
+
+  const startWorkshopDay = useCallback(() => {
+    const alreadyCounted = session.attended === true
+    setSession((s) => {
+      const next: UserSession = { ...s, workshopDay: true, attended: true }
+      persistSession(next)
+      return next
+    })
+    if (!alreadyCounted) {
+      trackEvent('attendance_confirmed')
+      refreshAnalytics()
+    }
+  }, [refreshAnalytics, session.attended])
+
+  const completeWorkshop = useCallback(() => {
+    setSession((s) => {
+      const next: UserSession = {
+        ...s,
+        workshopDay: true,
+        attended: true,
+        workshopCompleted: true,
+        starterKitUnlocked: true,
+      }
+      persistSession(next)
+      return next
+    })
+    if (!session.attended) {
+      trackEvent('attendance_confirmed')
+    }
+    if (!session.starterKitUnlocked) {
+      trackEvent('starter_kit_view')
+    }
+    refreshAnalytics()
+  }, [refreshAnalytics, session.attended, session.starterKitUnlocked])
 
   const markKitDownload = useCallback(
     (key: keyof UserSession['kitDownloads']) => {
@@ -213,6 +261,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setAnswers,
       register,
       setAttended,
+      startWorkshopDay,
+      completeWorkshop,
       markKitDownload,
       refreshAnalytics,
       resetDemo,
@@ -224,6 +274,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       displayAnalytics,
       setAnswers,
       register,
+      startWorkshopDay,
+      completeWorkshop,
       setAttended,
       markKitDownload,
       refreshAnalytics,

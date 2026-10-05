@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../components/Button'
+import { JoiningDetails } from '../components/JoiningDetails'
+import { JourneyNav } from '../components/JourneyNav'
 import { SharePanel } from '../components/SharePanel'
 import { useApp } from '../context/AppContext'
-import { WORKSHOP } from '../data/workshop'
-import { buildGoogleCalendarUrl, downloadIcsFile } from '../lib/calendar'
+import { buildProjectRoadmap } from '../data/roadmaps'
 
 export function Confirmation() {
   const navigate = useNavigate()
@@ -17,80 +18,58 @@ export function Confirmation() {
   if (!session.registration) return null
 
   const projectName = session.project?.name ?? 'Your AI project'
+  const roadmap = buildProjectRoadmap(session.project, session.answers)
 
   return (
     <div>
-      <div className="text-center pt-4 pb-6">
-        <div className="text-4xl mb-2">🎉</div>
-        <h1 className="font-display text-2xl font-bold text-white">You&apos;re In!</h1>
-        <p className="text-sm text-slate-400 mt-1">Hi {session.registration.name.split(' ')[0]}, see you in the workshop.</p>
+      <JourneyNav />
+      <div className="mb-6">
+        <p className="text-3xl mb-2">🎉</p>
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-ink">You&apos;re In!</h1>
+        <p className="text-sm text-ink-soft mt-1">
+          Hi {session.registration.name.split(' ')[0]}, you don&apos;t need to search email for access —
+          everything is here.
+        </p>
       </div>
 
-      <div className="glass rounded-2xl p-4 space-y-3 text-sm">
-        <Row label="Workshop" value={WORKSHOP.title} highlight />
-        <Row label="Date" value={WORKSHOP.date} />
-        <Row label="Time" value={`${WORKSHOP.time} ${WORKSHOP.timezone}`} />
-        <Row label="Duration" value={`${WORKSHOP.durationMinutes} minutes`} />
-        <div>
-          <p className="text-xs text-slate-500 mb-2">Join link</p>
-          <a
-            href={WORKSHOP.joinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 text-center py-3 font-semibold text-white"
-          >
-            Join Workshop
-          </a>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-7 space-y-4">
+          <JoiningDetails projectName={projectName} />
+          {session.myReferralCode && (
+            <p className="text-xs text-muted font-mono">Your referral code: {session.myReferralCode}</p>
+          )}
         </div>
-        <div className="pt-2 border-t border-slate-700">
-          <p className="text-xs text-slate-500 mb-2">Add to calendar</p>
-          <div className="flex gap-2">
-            <a
-              href={buildGoogleCalendarUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 rounded-lg bg-slate-800 py-2.5 text-center text-xs font-medium text-slate-200 border border-slate-600"
-            >
-              Google Calendar
-            </a>
-            <button
-              type="button"
-              onClick={() => downloadIcsFile(projectName)}
-              className="flex-1 rounded-lg bg-slate-800 py-2.5 text-xs font-medium text-slate-200 border border-slate-600"
-            >
-              Download .ics
-            </button>
+
+        <div className="lg:col-span-5 space-y-4">
+          <div className="card p-5">
+            <p className="eyebrow mb-2">Your project</p>
+            <p className="font-display text-lg font-semibold text-ink">{roadmap.projectName}</p>
+            {session.project?.fitScore ? (
+              <p className="text-sm text-brand font-medium mt-1">Project Fit: {session.project.fitScore}%</p>
+            ) : null}
+            <p className="text-xs text-muted mt-2">{roadmap.stack}</p>
+            <p className="text-sm text-ink-soft mt-3">
+              Next: walk your personalized roadmap so the workshop feels like day one of a project — not
+              a one-off lecture.
+            </p>
+            <Link to="/roadmap" className="block mt-4">
+              <Button>View my project roadmap</Button>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
+            <Link to="/reminders">
+              <Button variant="secondary">View reminder timeline</Button>
+            </Link>
+            <Link to="/attendance">
+              <Button variant="ghost">Simulate workshop day →</Button>
+            </Link>
           </div>
         </div>
-        <div className="pt-2">
-          <p className="text-xs text-slate-500">Your personalized project</p>
-          <p className="text-cyan-400 font-semibold">{projectName}</p>
-        </div>
       </div>
 
-      {session.myReferralCode && (
-        <p className="text-xs text-slate-500 mt-4 text-center font-mono">
-          Your referral code: {session.myReferralCode}
-        </p>
-      )}
-
-      <SharePanel variant="invite" />
-
-      <Link to="/reminders" className="block mt-4">
-        <Button variant="secondary">View reminder timeline (simulated)</Button>
-      </Link>
-      <Link to="/attendance" className="block mt-2">
-        <Button variant="ghost">Simulate workshop day →</Button>
-      </Link>
-    </div>
-  )
-}
-
-function Row({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
-  return (
-    <div>
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className={highlight ? 'text-white font-medium' : 'text-slate-300'}>{value}</p>
+      <div className="max-w-xl">
+        <SharePanel variant="invite" />
+      </div>
     </div>
   )
 }
